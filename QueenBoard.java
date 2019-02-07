@@ -15,7 +15,22 @@ public class QueenBoard{
     }
   }
 
-  private boolean addQueen(int r, int c);
+  private boolean addQueen(int r, int c){
+    if(board[r][c] != 0){ //if the square has been marked or already has a queen
+      return false;
+    }else{
+      makeX(r, c); //a method to mark the places where this queen can attack
+      return false;
+    }
+  }
 
-  private boolean removeQueen(int r, int c);
+  private boolean removeQueen(int r, int c){
+    if(board[r][c] == -1){
+      board[r][c] == 0;
+      makeZero(r, c); //a method that backtracks and unmarks the queen's territory
+      return true;
+    }else{
+      return false;
+    }
+  }
 }
