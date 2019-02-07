@@ -1,1 +1,1 @@
-# MKS22X-QueenBoard
+# MKS22X-Queens
