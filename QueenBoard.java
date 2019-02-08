@@ -24,13 +24,41 @@ public class QueenBoard{
     }
   }
 
+  private void makeX(int r, int c){
+    for(int i = c+1; i < board[r].length; i++){
+      board[r][i] = board[r][i] + 1;
+    }
+    for(int x = r+1; x < board.length; x++){
+      board[x][c+1] = board[x][c+1] + 1;
+    }
+    for(int y = r+1; y < board.length; y++){
+      for(int z = c+1; z < board[y].length; z++){
+        board[y][z] = board[y][z] + 1;
+      }
+    }
+  }
+
   private boolean removeQueen(int r, int c){
     if(board[r][c] == -1){
-      board[r][c] == 0;
-      makeZero(r, c); //a method that backtracks and unmarks the queen's territory
+      board[r][c] = 0;
+      makeLess(r, c); //a method that backtracks and unmarks the queen's territory
       return true;
     }else{
       return false;
+    }
+  }
+
+  private void makeLess(int r, int c){
+    for(int i = c+1; i < board[r].length; i++){
+      board[r][i] = board[r][i] - 1;
+    }
+    for(int x = r+1; x < board.length; x++){
+      board[x][c+1] = board[x][c+1] - 1;
+    }
+    for(int y = r+1; y < board.length; y++){
+      for(int z = c+1; z < board[y].length; z++){
+        board[y][z] = board[y][z] - 1;
+      }
     }
   }
 }
