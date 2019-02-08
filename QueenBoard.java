@@ -44,7 +44,7 @@ public class QueenBoard{
   }
 
   private boolean removeQueen(int r, int c){
-    if(board[r][c] == -1){
+    if(board[r][c] == -1){ //if there is a queen present on this square
       board[r][c] = 0;
       makeLess(r, c); //a method that backtracks and unmarks the queen's territory
       return true;
@@ -86,15 +86,29 @@ public class QueenBoard{
     return result;
   }
 
+  public boolean solve(){
+    for(int i = 0; i < board.length; i++){
+      for(int x = 0; x < board[i].length; x++){
+        if(board[i][x] != 0) return false;
+      }
+    }
+    solveH(0, 0, 0, board.length);
+  }
+
+  public boolean solveH(int r, int c, int added, int length){
+    if(c >= board[r].length) return added == length;
+  }
+
 
   public static void main(String[] args){
     QueenBoard board1 = new QueenBoard(5);
 
-    System.out.println("---Testing AddQueen---");
+    System.out.println("---Testing addQueen and removeQueen---");
     board1.addQueen(2, 0);
     System.out.println(board1);
+
     QueenBoard board2 = board1;
-    board2.removeQueen(2, 0);
+    board2.removeQueen(1, 0);
     System.out.println(board2);
   }
 }
