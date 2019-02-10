@@ -92,11 +92,26 @@ public class QueenBoard{
         if(board[i][x] != 0) return false;
       }
     }
-    solveH(0, 0, 0, board.length);
+    return solveH(0, 0, 0, board.length);
   }
 
   public boolean solveH(int r, int c, int added, int length){
-    if(c >= board[r].length) return added == length;
+    if(c >= length) return added == length;
+    if(r >= length && r == added) return false;
+    int queenR = 0;
+    int queenC = 0;
+    if(r >= length){
+      removeQueen(queenR, queenC);
+      solveH(queenR+1, queenC, added-1, length);
+    }else if(board[r][c] == 0){
+      addQueen(r, c);
+      queenR = r;
+      queenC = c;
+      solveH(0, c+1, added+1, length);
+    }else{
+      solveH(r+1, c, added, length);
+    }
+    return false;
   }
 
 
@@ -110,5 +125,9 @@ public class QueenBoard{
     QueenBoard board2 = board1;
     board2.removeQueen(1, 0);
     System.out.println(board2);
+
+    QueenBoard board3 = new QueenBoard(4);
+    System.out.println(board3.solve());
+    System.out.println(board3);
   }
 }
