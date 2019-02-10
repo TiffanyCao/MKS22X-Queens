@@ -181,23 +181,37 @@ public class QueenBoard{
     return count;
   }
 
-  public static void main(String[] args){
+  public static void main(String[] args) {
     QueenBoard board1 = new QueenBoard(5);
 
     System.out.println("---Testing addQueen and removeQueen---");
-    board1.addQueen(2, 0);
+    System.out.println("*5 X 5 board: adding queen at (2, 0): should return true*");
+    System.out.println(board1.addQueen(2, 0));
     System.out.println(board1);
+    System.out.println("*5 X 5 board: removing queen at (2, 0): should return true*");
 
     QueenBoard board2 = board1;
-    board2.removeQueen(2, 0);
+    System.out.println(board2.removeQueen(2, 0));
     System.out.println(board2);
 
-    QueenBoard board3 = new QueenBoard(5);
-    System.out.println(board3.solve());
-    System.out.println(board3);
+    System.out.println("*5 X 5 board: adding queen at (1, 0): should return true*");
+    System.out.println(board2.addQueen(1, 0));
+    System.out.println(board2);
 
-    QueenBoard board4 = new QueenBoard(8);
-    System.out.println(board4.countSolutions());
-    System.out.println(board4);
+    System.out.println("*5 X 5 board: adding queen at (2, 0): should return false*");
+    System.out.println(board2.addQueen(2, 0));
+    System.out.println(board2);
+
+    System.out.println("*5 X 5 board: adding queen at (2, 1): should return false*");
+    System.out.println(board2.addQueen(2, 1));
+    System.out.println(board2);
+
+    System.out.println("*5 X 5 board: adding queen at (4, 1): should return true*");
+    System.out.println(board2.addQueen(4, 1));
+    System.out.println(board2);
+
+    System.out.println("*5 X 5 board: removing queen at (4, 1): should return true*");
+    System.out.println(board2.removeQueen(4, 1));
+    System.out.println(board2);
   }
 }
