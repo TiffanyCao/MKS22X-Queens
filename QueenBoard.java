@@ -148,7 +148,12 @@ public class QueenBoard{
         if(board[i][x] != 0) throw new IllegalStateException();
       }
     }
-    return solveH(0, 0); //helper function
+    if(solveH(0, 0)){ //if it's solveable
+      return true;
+    }else{ //if it's not solveable
+      toEmpty(); //empty the board
+      return false;
+    }
   }
 
   /**A method that counts the current number of queens on the board
@@ -178,14 +183,12 @@ public class QueenBoard{
         int queenC = c;
         if(solveH(0, c+1)){ //check if the next column has an available space
           return true;
-        }else{
-          removeQueen(queenR, queenC); //if not, remove the queen
         }
+        removeQueen(queenR, queenC); //if not, remove the queen
       }
       if(c > countQueens()) return false; //if the current column is greater than the number of queens placed, return false
     }
-    toEmpty(); //if previously doesn't return true, then that means it's not solveable and it's emptied
-    return false;
+    return false; //the board is not solveable after all the options have been explored
   }
 
   /**A method that counts the number of possible solutions to the board
