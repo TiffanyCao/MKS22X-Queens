@@ -97,18 +97,20 @@ public class QueenBoard{
 
   public boolean solveH(int r, int c, int added){
     if(c >= board.length) return added == board.length;
-    int queenR = r;
-    int queenC = c;
-    for(int i = r; i < board.length; i++){
-      if(addQueen(i, c)){
-        queenR = i;
-        queenC = c;
-        solveH(0, c+1, added+1);
+    if(addQueen(r, c)){
+      int queenR = r;
+      int queenC = c;
+      for(int i = 0; i < board.length; i++){
+        if(addQueen(i, c+1)){
+          queenR = i;
+          queenC = c;
+          solveH(0, c+1, added+1);
+        }
       }
     }
-    removeQueen(queenR, queenC);
+    removeQueen(r, c);
     if(r < board.length){
-      solveH(queenR+1, queenC, added-1);
+      solveH(r+1, c, added-1);
     }
     return false;
   }
