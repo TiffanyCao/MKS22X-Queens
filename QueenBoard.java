@@ -21,9 +21,9 @@ public class QueenBoard{
     if(board[r][c] != 0){ //if the square has been marked or already has a queen
       return false;
     }else{
-      board[r][c] = -1;
       makeX(r, c); //a method to mark the places where this queen can attack
-      return false;
+      board[r][c] = -1;
+      return true;
     }
   }
 
@@ -31,22 +31,27 @@ public class QueenBoard{
     for(int i = c+1; i < board[r].length; i++){
       board[r][i] = board[r][i] + 1;
     }
-    int z = c+1;
-    for(int y = r+1; y < board.length; y++){
+    for(int i = 0; i < board.length; i++){
+      board[i][c] = board[i][c] + 1;
+    }
+    if(c != board.length-1){
+      int z = c+1;
+      for(int y = r+1; y < board.length; y++){
+          board[y][z] = board[y][z] + 1;
+          z++;
+      }
+      z = c+1;
+      for(int y = r-1; y >= 0; y--){
         board[y][z] = board[y][z] + 1;
         z++;
-    }
-    z = c+1;
-    for(int y = r-1; y >= 0; y--){
-      board[y][z] = board[y][z] + 1;
-      z++;
+      }
     }
   }
 
   private boolean removeQueen(int r, int c){
     if(board[r][c] == -1){ //if there is a queen present on this square
-      board[r][c] = 0;
       makeLess(r, c); //a method that backtracks and unmarks the queen's territory
+      board[r][c] = 0;
       return true;
     }else{
       return false;
@@ -57,15 +62,20 @@ public class QueenBoard{
     for(int i = c+1; i < board[r].length; i++){
       board[r][i] = board[r][i] - 1;
     }
-    int z = c+1;
-    for(int y = r+1; y < board.length; y++){
+    for(int i = 0; i < board.length; i++){
+      board[i][c] = board[i][c] - 1;
+    }
+    if(c != board.length-1){
+      int z = c+1;
+      for(int y = r+1; y < board.length; y++){
+          board[y][z] = board[y][z] - 1;
+          z++;
+      }
+      z = c+1;
+      for(int y = r-1; y >= 0; y--){
         board[y][z] = board[y][z] - 1;
         z++;
-    }
-    z = c+1;
-    for(int y = r-1; y >= 0; y--){
-      board[y][z] = board[y][z] - 1;
-      z++;
+      }
     }
   }
 
@@ -89,27 +99,39 @@ public class QueenBoard{
   public boolean solve(){
     for(int i = 0; i < board.length; i++){
       for(int x = 0; x < board[i].length; x++){
-        if(board[i][x] != 0) return false;
+        if(board[i][x] != 0) throw new IllegalStateException();
       }
     }
-    return solveH(0, 0, 0);
+    return solveH(0, 0);
   }
 
-  public boolean solveH(int r, int c, int added){
-    if(c >= board.length-1) return added == board.length;
+  private int countQueens(){
+    int count = 0;
+    for(int i = 0; i < board.length; i++){
+      for(int y = 0; y < board[i].length; y++){
+        if(board[i][y] == -1) count++;
+      }
+    }
+    return count;
+  }
+
+  public boolean solveH(int r, int c){
+    if(c >= board.length-1) return countQueens() == board.length;
     for(int i = 0; i < board.length; i++){
       if(addQueen(i, c)){
         int queenR = i;
         int queenC = c;
-        if(solveH(0, c+1, added+1)){
+        if(solveH(0, c+1)){
           return true;
         }else{
           removeQueen(queenR, queenC);
         }
       }
+      if(c > countQueens()) return false;
     }
     return false;
   }
+
 
 
   public static void main(String[] args){
@@ -120,10 +142,10 @@ public class QueenBoard{
     System.out.println(board1);
 
     QueenBoard board2 = board1;
-    board2.removeQueen(1, 0);
+    board2.removeQueen(2, 0);
     System.out.println(board2);
 
-    QueenBoard board3 = new QueenBoard(4);
+    QueenBoard board3 = new QueenBoard(5);
     System.out.println(board3.solve());
     System.out.println(board3);
   }
