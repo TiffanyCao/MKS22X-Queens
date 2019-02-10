@@ -83,6 +83,18 @@ public class QueenBoard{
     }
   }
 
+  /**
+  *@return The outpu string formatted as follows:
+  *All numbers that represent queens are replaced with 'Q'
+  *All others are displayed as underscores '_'
+  *There are spaces between each symbol
+  * _ _ Q _
+  * Q _ _ _
+  * _ _ _ Q
+  * _ Q _ _
+  *(pythonic string notation for clarity,
+  *excludes the charatcer up to the *)
+  */
   public String toString(){
     String result = "";
     for(int i = 0; i < board.length; i++){
@@ -90,7 +102,7 @@ public class QueenBoard{
         if(board[i][x] == -1){
           result += "Q ";
         }else{
-          result += "" + board[i][x] + " ";
+          result += '_' + " ";
         }
         if(x == board[i].length - 1){
           result += "\n";
@@ -100,6 +112,11 @@ public class QueenBoard{
     return result;
   }
 
+  /**
+  *@return false when the board is not solveable and leaves the board filled with zeroes
+  *        true when the board is solveable and leaves the board in a solved state
+  *@throws IllegalStateException when the board starts with any non-zero value
+  */
   public boolean solve(){
     for(int i = 0; i < board.length; i++){
       for(int x = 0; x < board[i].length; x++){
@@ -133,10 +150,28 @@ public class QueenBoard{
       }
       if(c > countQueens()) return false;
     }
+    toEmpty();
     return false;
   }
 
+  /**
+  *@return the number of solutions found, and leaves the board filled with only 0's
+  *@throws IllegalStateException when the board starts with any non-zero value
+  */
+  public int countSolutions(){
+    for(int i = 0; i < board.length; i++){
+      for(int x = 0; x < board[i].length; x++){
+        if(board[i][x] != 0) throw new IllegalStateException();
+      }
+    }
+    return countH(0, 0, 0);
+  }
 
+  private int countH(int r, int c, int count){
+    if(c >= board.length) return count;
+    if(solveH(r, c)) return countH(0, c+1, count+1);
+    return countH(r+1, c, count);
+  }
 
   public static void main(String[] args){
     QueenBoard board1 = new QueenBoard(5);
@@ -152,5 +187,9 @@ public class QueenBoard{
     QueenBoard board3 = new QueenBoard(5);
     System.out.println(board3.solve());
     System.out.println(board3);
+
+    QueenBoard board4 = new QueenBoard(8);
+    System.out.println(board4.countSolutions());
+    System.out.println(board4);
   }
 }
