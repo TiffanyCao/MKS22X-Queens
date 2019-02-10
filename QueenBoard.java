@@ -96,17 +96,15 @@ public class QueenBoard{
   }
 
   public boolean solveH(int r, int c, int added){
-    if(c >= board.length) return added == board.length;
-    int queenR = 0;
-    int queenC = 0;
+    if(c >= board.length-1) return added == board.length;
     for(int i = 0; i < board.length; i++){
       if(addQueen(i, c)){
-        queenR = i;
-        queenC = c;
-        if(!solveH(0, c+1, added+1)){
-          removeQueen(queenR, queenC);
+        int queenR = i;
+        int queenC = c;
+        if(solveH(0, c+1, added+1)){
+          return true;
         }else{
-          solveH(0, c+1, added+1);
+          removeQueen(queenR, queenC);
         }
       }
     }
