@@ -34,14 +34,16 @@ public class QueenBoard{
     for(int i = 0; i < board.length; i++){
       board[i][c] = board[i][c] + 1;
     }
-    if(c != board.length-1){
-      int z = c+1;
-      for(int y = r+1; y < board.length; y++){
-          board[y][z] = board[y][z] + 1;
-          z++;
+    int z = c+1;
+    for(int y = r+1; y < board.length; y++){
+      if(z < board.length){
+        board[y][z] = board[y][z] + 1;
+        z++;
       }
-      z = c+1;
-      for(int y = r-1; y >= 0; y--){
+    }
+    z = c+1;
+    for(int y = r-1; y >= 0; y--){
+      if(z < board.length){
         board[y][z] = board[y][z] + 1;
         z++;
       }
@@ -65,14 +67,16 @@ public class QueenBoard{
     for(int i = 0; i < board.length; i++){
       board[i][c] = board[i][c] - 1;
     }
-    if(c != board.length-1){
-      int z = c+1;
-      for(int y = r+1; y < board.length; y++){
-          board[y][z] = board[y][z] - 1;
-          z++;
+    int z = c+1;
+    for(int y = r+1; y < board.length; y++){
+      if(z < board.length){
+        board[y][z] = board[y][z] - 1;
+        z++;
       }
-      z = c+1;
-      for(int y = r-1; y >= 0; y--){
+    }
+    z = c+1;
+    for(int y = r-1; y >= 0; y--){
+      if(z < board.length){
         board[y][z] = board[y][z] - 1;
         z++;
       }
@@ -116,7 +120,7 @@ public class QueenBoard{
   }
 
   public boolean solveH(int r, int c){
-    if(c >= board.length-1) return countQueens() == board.length;
+    if(c >= board.length) return countQueens() == board.length;
     for(int i = 0; i < board.length; i++){
       if(addQueen(i, c)){
         int queenR = i;
