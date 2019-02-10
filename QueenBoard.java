@@ -92,24 +92,23 @@ public class QueenBoard{
         if(board[i][x] != 0) return false;
       }
     }
-    return solveH(0, 0, 0, board.length);
+    return solveH(0, 0, 0);
   }
 
-  public boolean solveH(int r, int c, int added, int length){
-    if(c >= length) return added == length;
-    if(r >= length && r == added) return false;
-    int queenR = 0;
-    int queenC = 0;
-    if(r >= length){
-      removeQueen(queenR, queenC);
-      solveH(queenR+1, queenC, added-1, length);
-    }else if(board[r][c] == 0){
-      addQueen(r, c);
-      queenR = r;
-      queenC = c;
-      solveH(0, c+1, added+1, length);
-    }else{
-      solveH(r+1, c, added, length);
+  public boolean solveH(int r, int c, int added){
+    if(c >= board.length) return added == board.length;
+    int queenR = r;
+    int queenC = c;
+    for(int i = r; i < board.length; i++){
+      if(addQueen(i, c)){
+        queenR = i;
+        queenC = c;
+        solveH(0, c+1, added+1);
+      }
+    }
+    removeQueen(queenR, queenC);
+    if(r < board.length){
+      solveH(queenR+1, queenC, added-1);
     }
     return false;
   }
