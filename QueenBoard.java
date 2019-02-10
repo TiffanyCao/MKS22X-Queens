@@ -4,11 +4,16 @@ public class QueenBoard{
 
   private int[][] board;
 
+  /**A constructor for a chessboard of the given size
+  *@param size
+  */
   public QueenBoard(int size){
     board = new int[size][size];
     toEmpty();
   }
 
+  /*A method to clear the board and fill it with zeroes
+  */
   public void toEmpty(){
     for(int i = 0; i < board.length; i++){
       for(int x = 0; x < board[i].length; x++){
@@ -17,66 +22,86 @@ public class QueenBoard{
     }
   }
 
+  /**A method to place a queen on the board and mark all the places in danger
+  *@param r the row of the queen
+  *@param c the column of the queen
+  *@return true if the queen can be placed
+           false if the queen can't be placed
+  */
   private boolean addQueen(int r, int c){
     if(board[r][c] != 0){ //if the square has been marked or already has a queen
       return false;
     }else{
       makeX(r, c); //a method to mark the places where this queen can attack
-      board[r][c] = -1;
+      board[r][c] = -1; //place a queen
       return true;
     }
   }
 
+  /**A helper method to mark all the places in danger
+  *@param r the row of the queen
+  *@param c the column of the queen
+  */
   private void makeX(int r, int c){
-    for(int i = c+1; i < board[r].length; i++){
+    for(int i = c+1; i < board[r].length; i++){ //mark all the places directly to the right of the queen
       board[r][i] = board[r][i] + 1;
     }
-    for(int i = 0; i < board.length; i++){
+    for(int i = 0; i < board.length; i++){ //mark all the places up and down the row of the queen
       board[i][c] = board[i][c] + 1;
     }
     int z = c+1;
-    for(int y = r+1; y < board.length; y++){
-      if(z < board.length){
+    for(int y = r+1; y < board.length; y++){ //mark all the diagonals (downwards)
+      if(z < board.length){ //provided that this is within the column range
         board[y][z] = board[y][z] + 1;
         z++;
       }
     }
     z = c+1;
-    for(int y = r-1; y >= 0; y--){
-      if(z < board.length){
+    for(int y = r-1; y >= 0; y--){ //mark all the diagonals (upwards)
+      if(z < board.length){ //provided that this is within the column range
         board[y][z] = board[y][z] + 1;
         z++;
       }
     }
   }
 
+  /**A method to remove a queen on the board and unmark all the places in danger
+  *@param r the row of the queen
+  *@param c the column of the queen
+  *@return true if the queen can be removed
+           false if the queen can't be removed
+  */
   private boolean removeQueen(int r, int c){
     if(board[r][c] == -1){ //if there is a queen present on this square
       makeLess(r, c); //a method that backtracks and unmarks the queen's territory
-      board[r][c] = 0;
+      board[r][c] = 0; //restores the place to empty
       return true;
     }else{
-      return false;
+      return false; //if there is no queen present on this square
     }
   }
 
+  /**A helper method to unmark all the places in danger
+  *@param r the row of the queen
+  *@param c the column of the queen
+  */
   private void makeLess(int r, int c){
-    for(int i = c+1; i < board[r].length; i++){
+    for(int i = c+1; i < board[r].length; i++){ //unmark all the places directly to the right of the queen
       board[r][i] = board[r][i] - 1;
     }
-    for(int i = 0; i < board.length; i++){
+    for(int i = 0; i < board.length; i++){ //unmark all the places up and down the row of the queen
       board[i][c] = board[i][c] - 1;
     }
     int z = c+1;
-    for(int y = r+1; y < board.length; y++){
-      if(z < board.length){
+    for(int y = r+1; y < board.length; y++){ //unmark all the diagonals (downwards)
+      if(z < board.length){ //provided that this is within the column range
         board[y][z] = board[y][z] - 1;
         z++;
       }
     }
     z = c+1;
-    for(int y = r-1; y >= 0; y--){
-      if(z < board.length){
+    for(int y = r-1; y >= 0; y--){ //unmark all the diagonals (upwards)
+      if(z < board.length){ //provided that this is within the column range
         board[y][z] = board[y][z] - 1;
         z++;
       }
@@ -84,7 +109,7 @@ public class QueenBoard{
   }
 
   /**
-  *@return The outpu string formatted as follows:
+  *@return The output string formatted as follows:
   *All numbers that represent queens are replaced with 'Q'
   *All others are displayed as underscores '_'
   *There are spaces between each symbol
@@ -99,12 +124,12 @@ public class QueenBoard{
     String result = "";
     for(int i = 0; i < board.length; i++){
       for(int x = 0; x < board[i].length; x++){
-        if(board[i][x] == -1){
+        if(board[i][x] == -1){ //if there's a queen
           result += "Q ";
         }else{
-          result += '_' + " ";
+          result += '_' + " "; //if there isn't a queen
         }
-        if(x == board[i].length - 1){
+        if(x == board[i].length - 1){ //new row
           result += "\n";
         }
       }
@@ -112,20 +137,23 @@ public class QueenBoard{
     return result;
   }
 
-  /**
+  /**A method that attempt to solve the board
   *@return false when the board is not solveable and leaves the board filled with zeroes
   *        true when the board is solveable and leaves the board in a solved state
   *@throws IllegalStateException when the board starts with any non-zero value
   */
   public boolean solve(){
-    for(int i = 0; i < board.length; i++){
+    for(int i = 0; i < board.length; i++){ //if the board is not empty
       for(int x = 0; x < board[i].length; x++){
         if(board[i][x] != 0) throw new IllegalStateException();
       }
     }
-    return solveH(0, 0);
+    return solveH(0, 0); //helper function
   }
 
+  /**A method that counts the current number of queens on the board
+  *@return int number of queens
+  */
   private int countQueens(){
     int count = 0;
     for(int i = 0; i < board.length; i++){
@@ -136,49 +164,62 @@ public class QueenBoard{
     return count;
   }
 
+  /**A recursive helper method that tests whether a solution is possible
+  *@param int r is the present row
+  *@param int c is the present column
+  *@return false when the board is not solveable and leaves the board filled with zeroes
+  *        true when the board is solveable and leaves the board in a solved state
+  */
   public boolean solveH(int r, int c){
-    if(c >= board.length) return countQueens() == board.length;
-    for(int i = 0; i < board.length; i++){
-      if(addQueen(i, c)){
-        int queenR = i;
+    if(c >= board.length) return countQueens() == board.length; //if the last column is reached and the maximum number of queens is placed
+    for(int i = 0; i < board.length; i++){ //loops through all the rows
+      if(addQueen(i, c)){ //if a queen can be added
+        int queenR = i; //store the queen's coordinates
         int queenC = c;
-        if(solveH(0, c+1)){
+        if(solveH(0, c+1)){ //check if the next column has an available space
           return true;
         }else{
-          removeQueen(queenR, queenC);
+          removeQueen(queenR, queenC); //if not, remove the queen
         }
       }
-      if(c > countQueens()) return false;
+      if(c > countQueens()) return false; //if the current column is greater than the number of queens placed, return false
     }
-    toEmpty();
+    toEmpty(); //if previously doesn't return true, then that means it's not solveable and it's emptied
     return false;
   }
 
-  /**
+  /**A method that counts the number of possible solutions to the board
   *@return the number of solutions found, and leaves the board filled with only 0's
   *@throws IllegalStateException when the board starts with any non-zero value
   */
   public int countSolutions(){
-    for(int i = 0; i < board.length; i++){
+    for(int i = 0; i < board.length; i++){ //if the board is not empty
       for(int x = 0; x < board[i].length; x++){
         if(board[i][x] != 0) throw new IllegalStateException();
       }
     }
-    return countH(0, 0, 0);
+    return countH(0, 0, 0); //helper function
   }
 
+  /**A helper recursive method that figures out the number of possible solutions
+  *@param int r is the current row
+  *@param int c is the current column
+  *@param int numQueens is the number of queens placed
+  *@return int is the number of solutions
+  */
   private int countH(int r, int c, int numQueens){
-    int count = 0;
-    if(c >= board.length && numQueens == board.length) return 1;
-    for(int i = 0; i < board.length; i++){
-      if(addQueen(i, c)){
-        int queenR = i;
+    int count = 0; //counter keeping track of number of solutions
+    if(c >= board.length && numQueens == board.length) return 1; //if the last column is reached and the max number of queens has been placed,
+                                                                 //that counts as one solution
+    for(int i = 0; i < board.length; i++){ //loops through all the rows
+      if(addQueen(i, c)){ //if a quen can be placed
+        int queenR = i; //stores the queen's coordinates
         int queenC = c;
-        count += countH(0, c+1, numQueens+1);
-        removeQueen(queenR, queenC);
+        count += countH(0, c+1, numQueens+1); //adds one if the configuration had a solution, otherwise 0 is returned
+        removeQueen(queenR, queenC); //remove the queen so the next possible placement in this column can be tested
       }
     }
-    return count;
+    return count; //returns the number of solutions;
   }
 
   public static void main(String[] args) {
