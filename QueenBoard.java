@@ -164,13 +164,23 @@ public class QueenBoard{
         if(board[i][x] != 0) throw new IllegalStateException();
       }
     }
-    return countH(0, 0, 0);
+    return countH(0, 0);
   }
 
-  private int countH(int r, int c, int count){
+  private int countH(int r, int c){
+    int count = 0;
     if(c >= board.length) return count;
-    if(solveH(r, c)) return countH(0, c+1, count+1);
-    return countH(r+1, c, count);
+    for(int i = 0; i < board.length; i++){
+      if(addQueen(i, c)){
+        int queenR = i;
+        int queenC = c;
+        if(solveH(0, c+1)){
+          count++;
+        }
+        removeQueen(queenR, queenC);
+      }
+    }
+    return count;
   }
 
   public static void main(String[] args){
