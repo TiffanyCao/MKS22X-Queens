@@ -148,7 +148,7 @@ public class QueenBoard{
         if(board[i][x] != 0) throw new IllegalStateException();
       }
     }
-    if(solveH(0, 0)){ //if it's solveable
+    if(solveH(0)){ //if it's solveable
       return true;
     }else{ //if it's not solveable
       toEmpty(); //empty the board
@@ -170,23 +170,19 @@ public class QueenBoard{
   }
 
   /**A recursive helper method that tests whether a solution is possible
-  *@param int r is the present row
   *@param int c is the present column
   *@return false when the board is not solveable and leaves the board filled with zeroes
   *        true when the board is solveable and leaves the board in a solved state
   */
-  public boolean solveH(int r, int c){
-    if(c >= board.length) return countQueens() == board.length; //if the last column is reached and the maximum number of queens is placed
+  public boolean solveH(int c){
+    if(c >= board.length) return true; //if the last column is reached, that's a solution
     for(int i = 0; i < board.length; i++){ //loops through all the rows
       if(addQueen(i, c)){ //if a queen can be added
-        int queenR = i; //store the queen's coordinates
-        int queenC = c;
-        if(solveH(0, c+1)){ //check if the next column has an available space
+        if(solveH(c+1)){ //check if the next column has an available space
           return true;
         }
-        removeQueen(queenR, queenC); //if not, remove the queen
+        removeQueen(i, c); //if not, remove the queen
       }
-      if(c > countQueens()) return false; //if the current column is greater than the number of queens placed, return false
     }
     return false; //the board is not solveable after all the options have been explored
   }
