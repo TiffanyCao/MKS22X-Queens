@@ -197,25 +197,20 @@ public class QueenBoard{
         if(board[i][x] != 0) throw new IllegalStateException();
       }
     }
-    return countH(0, 0, 0); //helper function
+    return countH(0); //helper function
   }
 
   /**A helper recursive method that figures out the number of possible solutions
-  *@param int r is the current row
   *@param int c is the current column
-  *@param int numQueens is the number of queens placed
   *@return int is the number of solutions
   */
-  private int countH(int r, int c, int numQueens){
+  private int countH(int c){
     int count = 0; //counter keeping track of number of solutions
-    if(c >= board.length && numQueens == board.length) return 1; //if the last column is reached and the max number of queens has been placed,
-                                                                 //that counts as one solution
+    if(c >= board.length) return 1; //if the last column is reached and the max number of queens has been placed, that counts as one solution
     for(int i = 0; i < board.length; i++){ //loops through all the rows
-      if(addQueen(i, c)){ //if a quen can be placed
-        int queenR = i; //stores the queen's coordinates
-        int queenC = c;
-        count += countH(0, c+1, numQueens+1); //adds one if the configuration had a solution, otherwise 0 is returned
-        removeQueen(queenR, queenC); //remove the queen so the next possible placement in this column can be tested
+      if(addQueen(i, c)){ //if a queen can be placed
+        count += countH(c+1); //adds one if the configuration had a solution, otherwise 0 is added
+        removeQueen(i, c); //remove the queen so the next possible placement in this column can be tested
       }
     }
     return count; //returns the number of solutions;
