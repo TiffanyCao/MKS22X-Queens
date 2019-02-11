@@ -161,7 +161,7 @@ public class QueenBoard{
   */
   private int countQueens(){
     int count = 0;
-    for(int i = 0; i < board.length; i++){
+    for(int i = 0; i < board.length; i++){ //loops throw the board for a queen
       for(int y = 0; y < board[i].length; y++){
         if(board[i][y] == -1) count++;
       }
